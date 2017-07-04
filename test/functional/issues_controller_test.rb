@@ -333,7 +333,7 @@ class SendIssueReplyEmail::IssuesControllerTest < ActionController::TestCase
       assert_select ".header" do
         assert_select "strong", text: "Header second line"
       end
-      assert_select "body", text: /Send a notification email!!/
+      assert_select "p", text: /Send a notification email!!/
       assert_select ".footer" do
         assert_select "strong", text: "Footer second line"
       end

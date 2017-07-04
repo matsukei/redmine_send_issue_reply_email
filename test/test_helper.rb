@@ -103,11 +103,3 @@ end
 def last_email
   ActionMailer::Base.deliveries.last
 end
-
-def assert_select_email(*args, &block)
-  email = last_email
-  assert_not_nil email
-  html_body = email.parts.detect {|part| part.content_type.include?('text/html')}.try(&:body)
-  assert_not_nil html_body
-  assert_select_in html_body.encoded, *args, &block
-end

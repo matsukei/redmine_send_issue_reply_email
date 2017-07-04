@@ -87,9 +87,7 @@ class IssueReplyMailerTest < ActiveSupport::TestCase
       assert_select ".header" do
         assert_select "strong", text: "Header second line"
       end
-      assert_select "body" do
-        assert_select "p", text: "Comments are written here(HTML format)."
-      end
+      assert_select "p", text: "Comments are written here(HTML format)."
       assert_select ".footer" do
         assert_select "strong", text: "Footer second line"
       end
@@ -116,9 +114,7 @@ class IssueReplyMailerTest < ActiveSupport::TestCase
     assert IssueReplyMailer.test_email(User.find(2), project.reload).deliver
     assert_select_email do
       assert_select ".header", false
-      assert_select "body" do
-        assert_select "p", text: "Comments are written here(HTML format)."
-      end
+      assert_select "p", text: "Comments are written here(HTML format)."
       assert_select ".footer", false
     end
     email_delivery_setting.update(plain_text: true)
@@ -143,9 +139,7 @@ class IssueReplyMailerTest < ActiveSupport::TestCase
       assert_select ".header" do
         assert_select "strong", text: "Header second line"
       end
-      assert_select "body" do
-        assert_select "p", text: "Comments are written here(HTML format)."
-      end
+      assert_select "p", text: "Comments are written here(HTML format)."
       assert_select ".footer", false
     end
     email_delivery_setting.update(plain_text: true)
@@ -168,9 +162,7 @@ class IssueReplyMailerTest < ActiveSupport::TestCase
     assert IssueReplyMailer.test_email(User.find(2), project.reload).deliver
     assert_select_email do
       assert_select ".header", false
-      assert_select "body" do
-        assert_select "p", text: "Comments are written here(HTML format)."
-      end
+      assert_select "p", text: "Comments are written here(HTML format)."
       assert_select ".footer" do
         assert_select "strong", text: "Footer second line"
       end
