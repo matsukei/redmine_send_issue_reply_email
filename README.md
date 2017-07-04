@@ -9,10 +9,10 @@ It is a plugin that provides the email sending feature to non Redmine users when
 1. Check the `Manage email delivery setting` checkbox on the `Administrator > Roles and permissions > Roles > Permissions > Send issue reply email` .
 2. Check the `Send issue reply email` checkbox on the `Projects > Settings > Modules` .
 3. Input the `Projects > Settings > Send issue reply email` .
-  * See: http://www.redmine.org/projects/redmine/wiki/EmailConfiguration
+    * See: http://www.redmine.org/projects/redmine/wiki/EmailConfiguration
 4. If you want to send the contents of the notes by email when editing the issue, check `Send a email` .
 5. If you input To and Cc and submit it, Send a email.
-  * For the issue registered or updated via email, the corresponding email address has been inputted in advance.
+    * For the issue registered or updated via email, the corresponding email address has been inputted in advance.
 
 ## Notes
 
@@ -44,6 +44,10 @@ It is a plugin that provides the email sending feature to non Redmine users when
 2. `$ bundle exec rake redmine:plugins:migrate NAME=redmine_send_issue_reply_email RAILS_ENV=production VERSION=0`
 3. remove plugins/redmine_send_issue_reply_email
 4. web service restart
+
+## Dependency
+
+Tags Input: https://github.com/xoxco/jQuery-Tags-Input
 
 ## License
 
