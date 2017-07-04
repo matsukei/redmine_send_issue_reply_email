@@ -1,0 +1,94 @@
+<% email_delivery_setting = issue.project.email_delivery_setting_of_issue_reply %>
+<% if @project && @project.module_enabled?(:send_issue_reply_email) && email_delivery_setting.present? %>
+  <% content_for :header_tags do %>
+    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-tagsinput/1.3.6/jquery.tagsinput.min.js"></script>
+    <style>
+      div#email-addresses label { font-weight: bold; }
+    </style>
+  <% end %>
+
+  <% issue.build_email_address_of_issue_reply if issue.email_address_of_issue_reply.blank? %>
+  <% show_fields = params[:is_send_email].present? ? params[:is_send_email].to_i == 1 : email_delivery_setting.default_send_email? %>
+  <% visibled_style = show_fields ? '' : 'display:none;' %>
+
+  <label for="is_send_email">
+    <%= check_box_tag 'is_send_email', 1, show_fields, onchange: "$('div.email-addresses').toggle();$('#issue_notes').focus(); return false;" %>
+    <%= l(:label_send_email) %>
+  </label>
+
+  <div id="email-addresses" style="<%= visibled_style %>" class="splitcontent email-addresses">
+    <%= form.fields_for :email_address_of_issue_reply do |f| %>
+      <%= f.hidden_field :issue_id, disabled: !show_fields %>
+      <p id="from_address">
+        <%= f.label :from_address %><span class="required">*</span><br />
+        <%= email_delivery_setting.from_address %>
+      </p>
+      <p id="reply_to_address">
+        <%= f.label :reply_to_address %><br />
+        <%= email_delivery_setting.reply_to_address %>
+      </p>
+      <p>
+        <%= f.label :to_addresses %><span class="required">*</span><br />
+        <%= f.text_field :to_addresses, no_label: true, disabled: !show_fields %>
+      </p>
+      <p>
+        <%= f.label :cc_addresses %><br />
+        <%= f.text_field :cc_addresses, no_label: true, disabled: !show_fields %>
+      </p>
+      <p>
+        <%= f.label :subject %><span class="required">*</span><br />
+        <%= f.text_field :subject, size: 120, maxlength: 255, no_label: true, disabled: !show_fields %>
+      </p>
+    <% end %>
+    <hr>
+
+    <div id="email-header" style="<%= visibled_style %>" class="splitcontent email-addresses">
+      <% if email_delivery_setting.plain_text? %>
+        <pre><%= email_delivery_setting.header %></pre>
+      <% else %>
+        <%= textilizable(email_delivery_setting, :header) %>
+      <% end %>
+    </div>
+  </div>
+
+  <div id="email-footer" style="<%= visibled_style %>" class="splitcontent email-addresses">
+    <% if email_delivery_setting.plain_text? %>
+      <pre><%= email_delivery_setting.footer %></pre>
+    <% else %>
+      <%= textilizable(email_delivery_setting, :footer) %>
+    <% end %>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      // See: https://github.com/xoxco/jQuery-Tags-Input#options
+      var options = {
+        'height':'100%',
+        'width':'98%',
+        'defaultText': ''
+      };
+      $('#issue_email_address_of_issue_reply_attributes_to_addresses').tagsInput(options);
+      $('#issue_email_address_of_issue_reply_attributes_cc_addresses').tagsInput(options);
+
+      var wrapper = $('#email-addresses');
+      wrapper.parent().prepend(wrapper);
+
+      // Because it does not send(nested attributes)
+      $('#is_send_email').change(function() {
+        var disabled = !this.checked;
+
+        wrapper.find('input').each(function(i, element) {
+          element = $(element);
+          if (disabled) {
+            element.attr('disabled', 'disabled');
+          } else {
+            element.removeAttr('disabled');
+          }
+        });
+      });
+
+    });
+  </script>
+
+<% end %>

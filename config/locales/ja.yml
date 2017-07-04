@@ -1,0 +1,27 @@
+ja:
+  label_send_email: メールを送信
+  field_default_send_email: 「メール送信」のデフォルトチェック
+  field_from_address: 差出人
+  field_reply_to_address: 返信先
+  field_to_addresses: 宛先
+  field_cc_addresses: Cc
+  field_plain_text: :setting_plain_text_mail
+  field_header: :setting_emails_header
+  field_footer: :setting_emails_footer
+  field_use_settings_of_redmine: Redmineの設定と同じ
+  field_delivery_method: Delivery method
+  field_server_location: Location
+  field_server_arguments: Arguments
+  field_server_address: Address
+  field_server_domain: Domain
+  field_server_port: Port
+  field_authentication: Authentication
+  field_user_name: User name
+  field_enable_starttls_auto: Enable start TLS auto
+  field_openssl_verify_mode: OpenSSL verify mode
+  label_email_template: メールテンプレート
+  label_send_email_server: メール送信サーバ
+  label_send_email_account: メール送信アカウント
+  label_send_issue_reply_email: チケット返信メール送信
+  project_module_send_issue_reply_email: :label_send_issue_reply_email
+  permission_manage_email_delivery_setting: メール送信設定の管理

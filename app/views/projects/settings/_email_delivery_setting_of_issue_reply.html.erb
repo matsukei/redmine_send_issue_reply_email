@@ -1,0 +1,83 @@
+<% email_delivery_setting = @email_delivery_setting || EmailDeliverySettingOfIssueReply.find_or_initialize_by(project_id: @project.id) %>
+<%= labelled_form_for email_delivery_setting, as: :email_delivery_setting_of_issue_reply, url: {
+    controller: 'email_delivery_setting_of_issue_replies', action: 'edit', id: @project
+  }, remote: true, html: { id: 'email-delivery-setting', method: :post, class: 'tabular' } do |f| %>
+
+  <%= error_messages_for 'email_delivery_setting' %>
+
+  <%= f.hidden_field :project_id, value: @project.id %>
+  <fieldset class="box">
+    <legend></legend>
+
+    <fieldset>
+      <legend><%= l(:label_email_template) %></legend>
+
+      <p><%= f.check_box :default_send_email %></p>
+      <p><%= f.text_field :from_address, size: 120, maxlength: 255, required: true %></p>
+      <p><%= f.text_field :reply_to_address, size: 120, maxlength: 255 %></p>
+      <p><%= f.check_box :plain_text %></p>
+      <p><%= f.text_area :header, cols: 60, rows: 5 %></p>
+      <p><%= f.text_area :footer, cols: 60, rows: 5 %></p>
+    </fieldset>
+
+    <fieldset>
+      <legend><%= l(:label_send_email_server) %></legend>
+
+      <% disable_server_info = email_delivery_setting.use_settings_of_redmine? %>
+      <p><%= f.check_box :use_settings_of_redmine %></p>
+      <p><%= f.select :delivery_method, EmailDeliverySettingOfIssueReply::DELIVERY_METHODS, {}, { disabled: disable_server_info } %></p>
+      <p><%= f.text_field :server_location, size: 120, maxlength: 255, disabled: disable_server_info %></p>
+      <p><%= f.text_field :server_arguments, size: 120, maxlength: 255, disabled: disable_server_info %></p>
+      <p><%= f.select :enable_starttls_auto, [[ l(:general_text_Yes), '1' ], [ l(:general_text_No), '0' ]], { include_blank: true }, { disabled: disable_server_info } %></p>
+      <p><%= f.select :openssl_verify_mode, EmailDeliverySettingOfIssueReply::OPENSSL_VERIFY_MODES, {}, { disabled: disable_server_info } %></p>
+      <p><%= f.text_field :server_address, size: 120, maxlength: 255, disabled: disable_server_info %></p>
+      <p><%= f.text_field :server_port, size: 120, maxlength: 255, disabled: disable_server_info %></p>
+      <p><%= f.text_field :server_domain, size: 120, maxlength: 255, disabled: disable_server_info %></p>
+    </fieldset>
+
+    <fieldset>
+      <legend><%= l(:label_send_email_account) %></legend>
+
+      <p><%= f.select :authentication, EmailDeliverySettingOfIssueReply::AUTHENTICATIONS, {}, { disabled: disable_server_info } %></p>
+      <p><%= f.text_field :account, label: :field_user_name, size: 120, maxlength: 255, disabled: disable_server_info %></p>
+      <p><%= f.password_field :account_password, label: :field_password, size: 120, maxlength: 255, disabled: disable_server_info, value: email_delivery_setting.account_password %></p>
+    </fieldset>
+
+  </fieldset>
+
+  <div style="float:right;">
+    <% unless email_delivery_setting.new_record? %>
+      <%= link_to l(:label_send_test_email), {
+          controller: 'email_delivery_setting_of_issue_replies', action: 'test_email', id: @project
+      }, method: :post %>
+    <% end %>
+  </div>
+
+  <%= submit_tag l(:button_save) %>
+<% end %>
+
+<script>
+$(document).ready(function() {
+  var attr_id_prefix = '#email_delivery_setting_of_issue_reply_';
+
+  $(attr_id_prefix + 'use_settings_of_redmine').change(function() {
+    var disabled = this.checked;
+    var attr_names = [
+      'delivery_method',
+      'server_location', 'server_arguments',
+      'enable_starttls_auto', 'openssl_verify_mode',
+      'server_address', 'server_port', 'server_domain',
+      'authentication', 'account', 'account_password'
+    ];
+
+    jQuery.each(attr_names, function(i, attr_name) {
+      var element = $(attr_id_prefix + attr_name);
+      if (disabled) {
+        element.attr('disabled', 'disabled');
+      } else {
+        element.removeAttr('disabled');
+      }
+    });
+  });
+});
+</script>

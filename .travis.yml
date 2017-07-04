@@ -1,0 +1,39 @@
+language: ruby
+
+# http://www.redmine.org/projects/redmine/wiki/RedmineInstall
+rvm:
+  - 1.9.3
+  - 2.0.0
+  - 2.1
+  - 2.2
+  - 2.3
+  - 2.4
+
+env:
+  - REDMINE_REPOS=branches/3.4-stable
+  - REDMINE_REPOS=branches/3.3-stable
+  - REDMINE_REPOS=branches/3.2-stable
+
+gemfile:
+  - $REDMINE_PATH/Gemfile
+
+before_install:
+  - export PLUGIN_NAME=redmine_send_issue_reply_email
+  - export DB=sqlite
+  - export NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  - export REDMINE_PATH=$HOME/redmine
+  - svn co http://svn.redmine.org/redmine/$REDMINE_REPOS $REDMINE_PATH
+  - ln -s $TRAVIS_BUILD_DIR $REDMINE_PATH/plugins/$PLUGIN_NAME
+  - cp test/database.travis.yml $REDMINE_PATH/config/database.yml
+  - cd $REDMINE_PATH
+
+before_script:
+  - bundle exec rake db:migrate
+  - bundle exec rake redmine:plugins:migrate
+
+script:
+  - RUBYOPT=-W0 bundle exec rake redmine:plugins:test NAME=$PLUGIN_NAME
+
+branches:
+  only:
+    - master

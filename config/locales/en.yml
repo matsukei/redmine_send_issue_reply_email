@@ -1,0 +1,27 @@
+en:
+  label_send_email: Send a email
+  field_default_send_email: default checked "Send a email"
+  field_from_address: From
+  field_reply_to_address: Reply-To
+  field_to_addresses: To
+  field_cc_addresses: Cc
+  field_plain_text: :setting_plain_text_mail
+  field_header: :setting_emails_header
+  field_footer: :setting_emails_footer
+  field_use_settings_of_redmine: Use settings of Redmine
+  field_delivery_method: Delivery method
+  field_server_location: Location
+  field_server_arguments: Arguments
+  field_server_address: Address
+  field_server_domain: Domain
+  field_server_port: Port
+  field_authentication: Authentication
+  field_user_name: User name
+  field_enable_starttls_auto: Enable start TLS auto
+  field_openssl_verify_mode: OpenSSL verify mode
+  label_email_template: Email template
+  label_send_email_server: Send email server
+  label_send_email_account: Send email account
+  label_send_issue_reply_email: Send issue reply email
+  project_module_send_issue_reply_email: :label_send_issue_reply_email
+  permission_manage_email_delivery_setting: Manage email delivery setting

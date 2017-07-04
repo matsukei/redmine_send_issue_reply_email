@@ -1,0 +1,7 @@
+<% if @email_delivery_setting.header.present? -%>
+<%= @email_delivery_setting.header %>
+<% end -%>
+<%= yield %>
+<% if @email_delivery_setting.footer.present? -%>
+<%= @email_delivery_setting.footer %>
+<% end -%>
