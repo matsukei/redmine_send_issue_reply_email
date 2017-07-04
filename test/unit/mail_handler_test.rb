@@ -10,8 +10,6 @@ class SendIssueReplyEmail::MailHandlerTest < ActiveSupport::TestCase
     :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions,
     :comments
 
-  FIXTURES_PATH = File.dirname(__FILE__) + '/../../../../test/fixtures/mail_handler'
-
   def setup
     ActionMailer::Base.deliveries.clear
     Setting.notified_events = []
@@ -19,9 +17,7 @@ class SendIssueReplyEmail::MailHandlerTest < ActiveSupport::TestCase
 
   def test_create_issue
     assert_difference 'EmailAddressOfIssueReply.count' do
-      issue = submit_email(
-        'ticket_by_unknown_user.eml',
-        issue: { project: 'ecookbook' },
+      issue = receive_issue_create_email(issue: { project: 'ecookbook' },
         unknown_user: 'accept', no_permission_check: '1')
 
       assert issue.is_a?(Issue)
@@ -38,7 +34,7 @@ class SendIssueReplyEmail::MailHandlerTest < ActiveSupport::TestCase
 
   def test_update_issue
     assert_difference 'EmailAddressOfIssueReply.count' do
-      journal = submit_email('ticket_reply.eml')
+      journal = receive_issue_reply_email
 
       assert journal.is_a?(Journal)
       assert_match /This is reply/, journal.notes
@@ -57,10 +53,55 @@ class SendIssueReplyEmail::MailHandlerTest < ActiveSupport::TestCase
 
   private
 
-    def submit_email(filename, options = {})
-      raw = IO.read(File.join(FIXTURES_PATH, filename))
-      yield raw if block_given?
+    def submit_email(raw, options)
       MailHandler.receive(raw, options)
+    end
+
+    def receive_issue_create_email(options = {})
+      raw = <<-'EOS'
+Return-Path: <john.doe@somenet.foo>
+Message-ID: <000501c8d452$a95cd7e0$0a00a8c0@osiris>
+From: "John Doe" <john.doe@somenet.foo>
+To: <redmine@somenet.foo>
+Subject: Ticket by unknown user
+Date: Sun, 22 Jun 2008 12:28:07 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+
+This is a ticket submitted by an unknown user.
+        EOS
+
+      submit_email(raw, options)
+    end
+
+    def receive_issue_reply_email(options = {})
+      raw = <<-'EOS'
+Return-Path: <jsmith@somenet.foo>
+Message-ID: <006a01c8d3bd$ad9baec0$0a00a8c0@osiris>
+From: "John Smith" <jsmith@somenet.foo>
+To: <redmine@somenet.foo>
+References: <485d0ad366c88_d7014663a025f@osiris.tmail>
+Subject: Re: [Cookbook - Feature #2] (New) Add ingredients categories
+Date: Sat, 21 Jun 2008 18:41:39 +0200
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0067_01C8D3CE.711F9CC0"
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0067_01C8D3CE.711F9CC0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+This is reply
+        EOS
+
+      submit_email(raw, options)
     end
 
 end
