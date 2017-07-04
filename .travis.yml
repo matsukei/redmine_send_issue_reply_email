@@ -17,6 +17,10 @@ env:
 gemfile:
   - $REDMINE_PATH/Gemfile
 
+matrix:
+  allow_failures:
+    - rvm: 2.4
+
 before_install:
   - export PLUGIN_NAME=redmine_send_issue_reply_email
   - export DB=sqlite
