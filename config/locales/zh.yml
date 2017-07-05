@@ -1,0 +1,27 @@
+zh:
+  label_send_email: 发送邮件
+  field_default_send_email: 默认勾选“发送邮件”
+  field_from_address: 发件人
+  field_reply_to_address: 回复给
+  field_to_addresses: 收件人
+  field_cc_addresses: 抄送
+  field_plain_text: :setting_plain_text_mail
+  field_header: :setting_emails_header
+  field_footer: :setting_emails_footer
+  field_use_settings_of_redmine: 使用Redmine默认邮件设置
+  field_delivery_method: 发送方式
+  field_server_location: 位置
+  field_server_arguments: 参数
+  field_server_address: 地址
+  field_server_domain: 域名
+  field_server_port: 端口
+  field_authentication: 认证方式
+  field_user_name: 用户名
+  field_enable_starttls_auto: 启用自动启动 TLS
+  field_openssl_verify_mode: OpenSSL 认证模式
+  label_email_template: 邮件模板
+  label_send_email_server: 邮件发送服务器
+  label_send_email_account: 邮件发送账号
+  label_send_issue_reply_email: 发送问题回复电子邮件
+  project_module_send_issue_reply_email: :label_send_issue_reply_email
+  permission_manage_email_delivery_setting: 电子邮件设置管理
