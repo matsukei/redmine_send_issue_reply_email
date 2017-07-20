@@ -13,6 +13,7 @@ It is a plugin that provides the email sending feature to non Redmine users when
 4. If you want to send the contents of the notes by email when editing the issue, check `Send a email` .
 5. If you input To and Cc and submit it, Send a email.
     * For the issue registered or updated via email, the corresponding email address has been inputted in advance.
+    * Even if you forget to input the issue_id in the subject, the project and issue_id are okay because they are attached to the email header.
 
 ## Notes
 
