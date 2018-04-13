@@ -13,9 +13,12 @@ It is a plugin that provides the email sending feature to non Redmine users when
 4. If you want to send the contents of the notes by email when editing the issue, check `Send a email` .
 5. If you input To and Cc and submit it, Send a email.
     * For the issue registered or updated via email, the corresponding email address has been inputted in advance.
+    * Even if you forget to input the issue_id in the subject, the project and issue_id are okay because they are attached to the email header.
 
 ## Notes
 
+* Setting to create and update issues by receiving email.
+  * See: http://www.redmine.org/projects/redmine/wiki/RedmineReceivingEmails
 * If you want to encrypt the password you entered, register `database_cipher_key` in `your_redmine_path/config/configuration.yml` .
   * When registering or changing `database_cipher_key`, Please enter the password again later.
   * If you are already registering SCM or LDAP password, please carefully read the notes in `your_redmine_path/config/configuration.yml`, such as by running `rake db:encrypt RAILS_ENV=production` .
